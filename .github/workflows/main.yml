@@ -24,14 +24,26 @@ jobs:
         sudo apt-get install -y git zip unzip openjdk-17-jdk libffi-dev libssl-dev libsqlite3-dev zlib1g-dev autoconf libtool pkg-config build-essential libtool-bin
         pip install --user --upgrade buildozer "cython>=3.0.0" virtualenv
 
-    - name: Prepare Android SDK Directory
+    - name: Force Download Legacy Android SDK Tools
       run: |
-        # إنشاء المجلدات مسبقاً لمنع تعارض التراخيص والمسارات القديمة
+        # إنشاء المسار الذي يبحث عنه buildozer بدقة
+        mkdir -p ~/.buildozer/android/platform/android-sdk
+        # تحميل الحزمة الكلاسيكية التي تحتوي على مجلد tools/bin/sdkmanager
+        wget -q https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -O sdk-tools.zip
+        unzip -q sdk-tools.zip -d ~/.buildozer/android/platform/android-sdk
+        rm sdk-tools.zip
+        
+        # قبول التراخيص مسبقاً داخل المجلد الجديد
         mkdir -p ~/.buildozer/android/platform/android-sdk/licenses || true
         echo -e "\n89346eb96b3913019929af2cd10944e53f6a57e3\n24333f8a63b6825ea9c5514f83c2829b004d1fee\nedb2790f3b379b22db05066fc0289a45e2f1e6f5" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license || true
 
     - name: Build with Buildozer
       run: |
         export PATH=$PATH:~/.local/bin
-        # تشغيل البناء مع تفعيل خيار قبول التراخيص التلقائي المدمج داخلياً
         buildozer android debug
+
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: package
+        path: .buildozer/android/platform/build/dists/*/bin/*.apk
