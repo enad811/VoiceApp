@@ -22,7 +22,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y git zip unzip openjdk-17-jdk libffi-dev libssl-dev libsqlite3-dev zlib1g-dev autoconf libtool pkg-config build-essential libtool-bin
-        pip install --user --upgrade buildozer cython virtualenv
+        pip install --user --upgrade buildozer cython==0.29.33 virtualenv
 
     - name: Accept Android Licenses
       run: |
@@ -33,6 +33,7 @@ jobs:
     - name: Build with Buildozer
       run: |
         export PATH=$PATH:~/.local/bin
+        buildozer clean
         yes | buildozer android debug
 
     - name: Upload APK Artifact
