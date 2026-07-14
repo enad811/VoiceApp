@@ -42,12 +42,12 @@ jobs:
 
     - name: Build with Buildozer
       run: |
-        # إجبار البيئة على مسار Java 11
+        # إجبار البيئة على مسار Java 11 وتجاوز الجافا الافتراضية للنظام
         export JAVA_HOME=$JAVA_HOME_11_X64
         export PATH=$JAVA_HOME/bin:$PATH
         export PATH=$PATH:~/.local/bin
         
-        # التأكد من الإصدار قبل البدء
+        # للتأكد من نجاح التحويل قبل البدء
         java -version
         
         buildozer android debug
