@@ -1,4 +1,4 @@
-name: Build APK with Docker
+name: Build APK with Docker Official
 
 on:
   push:
@@ -9,9 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # هنا نقوم باستدعاء حاوية دوكر مجهزة ومستقرة تماماً لبيلدوزر
+    # استخدام الحاوية الرسمية المضمونة والمفتوحة من شركة Kivy مباشرة
     container:
-      image: kavu/buildozer:latest
+      image: ghcr.io/kivy/buildozer:master
 
     steps:
     - name: Checkout code
@@ -19,5 +19,5 @@ jobs:
 
     - name: Build APK
       run: |
-        # تشغيل البناء مباشرة داخل البيئة المعزولة والمجهزة بالتراخيص
+        # تشغيل البناء داخل بيئة كيوي الرسمية المعزولة
         buildozer android debug
