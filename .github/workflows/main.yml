@@ -33,6 +33,6 @@ jobs:
     - name: Build with Buildozer
       run: |
         export PATH=$HOME/.local/bin:$PATH
-        # قبول رخص بيئة python-for-android تلقائياً أثناء البناء
+        # أمر داخلي يجعل الأداة توافق تلقائياً على رخص الإصدار المستقر المختار
         export APP_ANDROID_ACCEPT_SDK_LICENSE="1"
         buildozer android debug
