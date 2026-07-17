@@ -1,4 +1,4 @@
-name: Build APK
+name: Build APK with Docker
 
 on:
   push:
@@ -8,34 +8,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    # هنا نقوم باستدعاء حاوية دوكر مجهزة ومستقرة تماماً لبيلدوزر
+    container:
+      image: kavu/buildozer:latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-
-    - name: Install Dependencies
+    - name: Build APK
       run: |
-        python -m pip install --upgrade pip
-        pip install --user --upgrade "cython<3.0" virtualenv git+https://github.com/kivy/buildozer.git
-
-    - name: Build with Buildozer
-      run: |
-        export PATH=$HOME/.local/bin:$PATH
-        # الأمر الرسمي من أندرويد لـ قبول جميع التراخيص أوتوماتيكياً
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-        
-        # تشغيل البناء الآن والموافقة الداخلية مفعلة
-        export APP_ANDROID_ACCEPT_SDK_LICENSE="1"
+        # تشغيل البناء مباشرة داخل البيئة المعزولة والمجهزة بالتراخيص
         buildozer android debug
