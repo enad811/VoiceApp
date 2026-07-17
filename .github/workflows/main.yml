@@ -31,20 +31,11 @@ jobs:
         sudo apt-get install -y git zip unzip libffi-dev libssl-dev sqlite3 libsqlite3-dev zlib1g-dev libgdbm-dev libgdbm-compat-dev libncurses5-dev libreadline-dev libbz2-dev
         pip install --user --upgrade buildozer "cython>=3.0.0" virtualenv
 
-    - name: Auto-accept Android SDK Licenses
-      run: |
-        mkdir -p ~/.android
-        touch ~/.android/repositories.cfg
-        # إنشاء مجلد الرخص والموافقة التلقائية عليها مسبقاً لمنع توقف السيرفر
-        mkdir -p ~/.buildozer/android/platform/android-sdk/licenses || true
-        echo -e "\n2433f8a63b6825ea9c5514f83c28291072164407\n89346eb96b3913019929af2cd10944e53f6a57e3\n35b062b35a10ed00d6ff22d645f7823f03b22e11" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-        echo -e "\n849134789414bf9b2191d4e164765b7d0cf0c09e" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-preview-license
-
     - name: Build with Buildozer
       run: |
         export PATH=$PATH:~/.local/bin
-        java -version
-        buildozer android debug
+        # استخدام أمر yes للموافقة التلقائية على كل شروط ورخص أندرويد أثناء البناء
+        yes | buildozer android debug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
