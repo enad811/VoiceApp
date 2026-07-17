@@ -31,16 +31,6 @@ jobs:
         sudo apt-get install -y git zip unzip libffi-dev libssl-dev sqlite3 libsqlite3-dev zlib1g-dev libgdbm-dev libgdbm-compat-dev libncurses5-dev libreadline-dev libbz2-dev
         pip install --user --upgrade buildozer "cython>=3.0.0" virtualenv
 
-    - name: Force Download Legacy Android SDK Tools
-      run: |
-        mkdir -p ~/.buildozer/android/platform/android-sdk
-        wget -q https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -o sdk-tools.zip
-        unzip -q sdk-tools.zip -d ~/.buildozer/android/platform/android-sdk
-        rm -f sdk-tools.zip
-
-        mkdir -p ~/.buildozer/android/platform/android-sdk/licenses || true
-        echo -e "\n89346eb96b3913019929af2cd10944e53f6a57e3\n2433f8a63b6825ea9c5514f83c28291072164407" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-
     - name: Build with Buildozer
       run: |
         export PATH=$PATH:~/.local/bin
