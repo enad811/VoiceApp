@@ -33,6 +33,9 @@ jobs:
     - name: Build with Buildozer
       run: |
         export PATH=$HOME/.local/bin:$PATH
-        # قبول التراخيص رسمياً عبر أمر بيلدوزر الداخلي المباشر قبل البناء
-        buildozer android licenses
+        # الأمر الرسمي من أندرويد لـ قبول جميع التراخيص أوتوماتيكياً
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+        
+        # تشغيل البناء الآن والموافقة الداخلية مفعلة
+        export APP_ANDROID_ACCEPT_SDK_LICENSE="1"
         buildozer android debug
