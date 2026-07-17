@@ -1,20 +1,29 @@
-name: Build APK with Docker Step
+name: Build APK Custom
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Build APK inside Docker Container
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-data-version: '3.10'
+
+    - name: Install Dependencies
       run: |
-        # تشغيل الدوكر مباشرة وتمرير مجلد المشروع الحالي لداخله لبناء التطبيق
-        docker run --rm -v ${{ github.workspace }}:/home/developer/app ahmedrowaihi/buildozer:latest android debug
+        sudo apt-get update
+        sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev tk-dev libgdbm-compat-dev libc6-dev
+        pip install --upgrade pip
+        pip install buildozer kivy gtts speechrecognition requests
+
+    - name: Build with Buildozer
+      run: |
+        buildozer android debug
