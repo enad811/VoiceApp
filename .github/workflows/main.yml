@@ -33,5 +33,6 @@ jobs:
     - name: Build with Buildozer
       run: |
         export PATH=$HOME/.local/bin:$PATH
-        yes | sdkmanager "build-tools;37.0.0" "platform-tools" "platforms;android-34" || true
+        # قبول رخص بيئة python-for-android تلقائياً أثناء البناء
+        export APP_ANDROID_ACCEPT_SDK_LICENSE="1"
         buildozer android debug
