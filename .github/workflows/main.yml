@@ -20,18 +20,23 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
 
-    - name: Set up Python
+    - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    - name: Install Buildozer and Dependencies
+    - name: Install Correct Buildozer and Cython
       run: |
-        pip install --user --upgrade buildozer cython virtualenv
+        python -m pip install --upgrade pip
+        pip install --user "cython<3.0.0" virtualenv buildozer
 
     - name: Build with Buildozer
       run: |
+        export PATH=$HOME/.local/bin:$PATH
         yes | buildozer android debug
+      env:
+        # إجبار السيرفر على استخدام بايثون 3.10 فقط لمنع استدعاء بايثون 3.13
+        PYTHON: python3.10
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
