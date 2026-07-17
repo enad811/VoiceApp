@@ -28,11 +28,10 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install --user "cython>=3.0.0" virtualenv buildozer
+        pip install --user --upgrade "cython>=3.0.0" virtualenv git+https://github.com/kivy/buildozer.git
 
     - name: Build with Buildozer
       run: |
         export PATH=$HOME/.local/bin:$PATH
-        # أمر داخلي يجعل الأداة توافق تلقائياً على رخص الإصدار المستقر المختار
         export APP_ANDROID_ACCEPT_SDK_LICENSE="1"
         buildozer android debug
