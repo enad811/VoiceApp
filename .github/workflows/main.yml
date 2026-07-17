@@ -28,17 +28,15 @@ jobs:
     - name: Install Buildozer and Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip libffi-dev libssl-dev sqlite3 libsqlite3-dev zlib1g-dev libgdbm-dev libgdbm-compat-dev libncurses5-dev libreadline-dev libbz2-dev
-        pip install --user --upgrade buildozer "cython>=3.0.0" virtualenv
+        sudo apt-get install -y git zip unzip libffi-dev libssl-dev autoconf libtool pkg-config zlib1g-dev libgstreamer1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav libgstreamer-plugins-base1.0-dev libasound2-dev
+        pip install --user --upgrade "buildozer" "cython<3.0" virtualenv
 
     - name: Build with Buildozer
       run: |
-        export PATH=$PATH:~/.local/bin
-        # استخدام أمر yes للموافقة التلقائية على كل شروط ورخص أندرويد أثناء البناء
         yes | buildozer android debug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: package
-        path: .buildozer/android/platform/build/dists/*/bin/*.apk
+        path: bin/*.apk
