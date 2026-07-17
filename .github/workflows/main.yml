@@ -1,4 +1,4 @@
-name: Build APK with Docker Official
+name: Build APK with Docker Step
 
 on:
   push:
@@ -9,15 +9,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # استخدام الحاوية الرسمية المضمونة والمفتوحة من شركة Kivy مباشرة
-    container:
-      image: ghcr.io/kivy/buildozer:master
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Build APK
+    - name: Build APK inside Docker Container
       run: |
-        # تشغيل البناء داخل بيئة كيوي الرسمية المعزولة
-        buildozer android debug
+        # تشغيل الدوكر مباشرة وتمرير مجلد المشروع الحالي لداخله لبناء التطبيق
+        docker run --rm -v ${{ github.workspace }}:/home/developer/app ahmedrowaihi/buildozer:latest android debug
