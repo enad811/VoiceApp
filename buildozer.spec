@@ -10,6 +10,12 @@ orientation = portrait
 fullscreen = 0
 android.archs = arm64-v8a
 
+# تحديد الإصدارات المستقرة لمنع السيرفر من جلب أخطاء الأدوات الجديدة
+android.api = 33
+android.sdk = 33
+android.ndk = 25.2.9519653
+android.build_tools_version = 33.0.0
+
 [buildozer]
 log_level = 1
 warn_on_root = 1
