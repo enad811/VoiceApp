@@ -33,5 +33,5 @@ jobs:
     - name: Build with Buildozer
       run: |
         export PATH=$HOME/.local/bin:$PATH
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+        yes | sdkmanager "build-tools;37.0.0" "platform-tools" "platforms;android-34" || true
         buildozer android debug
